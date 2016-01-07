@@ -67,6 +67,16 @@ metal.registerTasks({
 	}
 });
 
+gulp.task('ci', function(cb) {
+  if (process.env.SAUCE_USERNAME) {
+    return runSequence('lint', 'test:saucelabs', 'build', cb);
+  }
+
+  console.warn('Not running tests on SauceLabs browsers (most likely due to security restrictions)');
+  console.warn('See https://docs.travis-ci.com/user/sauce-connect/ for help');
+  return runSequence('lint', 'test', 'build', cb);
+});
+
 // Helpers ---------------------------------------------------------------------
 
 gulp.task('banner', function() {
